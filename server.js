@@ -1,4 +1,3 @@
-
 const express = require("express");
 
 const app = express();
@@ -48,12 +47,11 @@ app.get("/tasks", (req, res) => {
 
 // Create task
 app.post("/tasks", (req, res) => {
+  console.log("body", req.body);
 
-
-    console.log("body",req.body)
   const { title } = req.body;
 
-  console.log("tasks",title)
+  console.log("tasks", title);
 
   if (!title) {
     return res.status(400).json({
@@ -71,7 +69,7 @@ app.post("/tasks", (req, res) => {
   });
 });
 
+// Start server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-
