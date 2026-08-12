@@ -23,15 +23,23 @@ pipeline {
 
         stage('Docker Run') {
             steps {
-                sh '''
-                    docker stop aws-node-demo || true
-                    docker rm aws-node-demo || true
+                withCredentials([
+                    string(
+                        credentialsId: 'mongo-uri',
+                        variable: 'MONGO_URI'
+                    )
+                ]) {
+                    sh '''
+                        docker stop aws-node-demo || true
+                        docker rm aws-node-demo || true
 
-                    docker run -d \
-                        --name aws-node-demo \
-                        -p 5000:5000 \
-                        aws-node-demo:latest
-                '''
+                        docker run -d \
+                            --name aws-node-demo \
+                            -p 5000:5000 \
+                            -e MONGO_URI="$MONGO_URI" \
+                            aws-node-demo:latest
+                    '''
+                }
             }
         }
     }
